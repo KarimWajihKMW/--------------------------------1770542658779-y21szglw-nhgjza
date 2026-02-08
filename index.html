@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أكوادرا - نظام إدارة المدارس الذكي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-cairo overflow-hidden">
+
+    <!-- LANDING VIEW (Preserved & Enhanced) -->
+    <div id="landing-view" class="fixed inset-0 z-50 bg-gradient-to-br from-indigo-50 to-blue-100 flex flex-col items-center justify-center transition-opacity duration-700">
+        <div class="max-w-md w-full text-center p-6 animate-fade-in-up">
+            <div class="mb-6 relative">
+                <div class="absolute inset-0 bg-blue-400 blur-2xl opacity-20 rounded-full"></div>
+                <h1 class="relative text-4xl font-extrabold text-slate-800 mb-2 tracking-tight">مرحباً بك في أكوادرا</h1>
+                <p class="relative text-indigo-600 font-semibold">نظام الإدارة المدرسية المتكامل</p>
+            </div>
+            
+            <p class="text-gray-600 mb-8 leading-relaxed">
+                الحل الأمثل لإدارة المدارس (الابتدائي، المتوسط، الثانوي)، المعلمين، الطلاب، والتحصيل العلمي في منصة واحدة.
+            </p>
+            
+            <div id="enter-btn" class="bg-white p-8 rounded-2xl shadow-xl border border-indigo-50 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer card group relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-indigo-500 to-purple-500 rounded-bl-full opacity-10 group-hover:opacity-20 transition-opacity"></div>
+                
+                <div class="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+                     <svg class="w-8 h-8 text-indigo-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">الدخول للنظام</h2>
+                <p class="text-gray-500 text-sm">اضغط هنا للبدء في إدارة مدرستك بكفاءة عالية</p>
+            </div>
+            
+            <div class="mt-8 text-sm text-gray-400 flex justify-center gap-4">
+                <span>مدعوم بواسطة Gemini 3 Pro</span>
+                <span>•</span>
+                <span>v2.0.0 School Edition</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD (Hidden Initially) -->
+    <div id="dashboard-view" class="hidden h-screen flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col shadow-2xl transition-all duration-300" id="sidebar">
+            <div class="p-6 flex items-center gap-3 border-b border-slate-700">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold">أكوادرا</h1>
+                    <p class="text-xs text-slate-400">للإدارة المدرسية</p>
+                </div>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-2">
+                <button onclick="app.switchTab('dashboard')" class="nav-item w-full text-right px-4 py-3 rounded-xl flex items-center gap-3 hover:bg-slate-800 transition-all text-indigo-400 bg-slate-800" data-tab="dashboard">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    <span>لوحة التحكم</span>
+                </button>
+                
+                <button onclick="app.switchTab('teachers')" class="nav-item w-full text-right px-4 py-3 rounded-xl flex items-center gap-3 text-slate-300 hover:bg-slate-800 hover:text-white transition-all" data-tab="teachers">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <span>المعلمين والمعلمات</span>
+                </button>
+
+                <button onclick="app.switchTab('students')" class="nav-item w-full text-right px-4 py-3 rounded-xl flex items-center gap-3 text-slate-300 hover:bg-slate-800 hover:text-white transition-all" data-tab="students">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path></svg>
+                    <span>الطلاب</span>
+                </button>
+
+                <button onclick="app.switchTab('grades')" class="nav-item w-full text-right px-4 py-3 rounded-xl flex items-center gap-3 text-slate-300 hover:bg-slate-800 hover:text-white transition-all" data-tab="grades">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"></path></svg>
+                    <span>التحصيل العلمي</span>
+                </button>
+            </nav>
+            
+            <div class="p-4 border-t border-slate-700">
+                <button class="w-full py-2 px-4 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    <span>تسجيل خروج</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto bg-slate-50 relative">
+            <!-- Header -->
+            <header class="bg-white shadow-sm sticky top-0 z-20 px-8 py-4 flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800" id="page-title">لوحة التحكم</h2>
+                    <p class="text-sm text-gray-500" id="current-date">...</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold border border-indigo-200">
+                        أ
+                    </div>
+                    <div class="text-sm">
+                        <p class="font-bold text-gray-900">المدير العام</p>
+                        <p class="text-gray-500 text-xs">admin@akwadra.com</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Views Container -->
+            <div class="p-8 pb-20 space-y-8">
+                
+                <!-- Dashboard View -->
+                <div id="view-dashboard" class="view-section animate-fade-in">
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                </div>
+                                <span class="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-full">+12%</span>
+                            </div>
+                            <h3 class="text-gray-500 text-sm font-medium">إجمالي المعلمين</h3>
+                            <p class="text-3xl font-bold text-gray-800 mt-1" id="stat-teachers-count">0</p>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                </div>
+                                <span class="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-full">+5%</span>
+                            </div>
+                            <h3 class="text-gray-500 text-sm font-medium">إجمالي الطلاب</h3>
+                            <p class="text-3xl font-bold text-gray-800 mt-1" id="stat-students-count">0</p>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <span class="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-full">ثابت</span>
+                            </div>
+                            <h3 class="text-gray-500 text-sm font-medium">متوسط الرواتب</h3>
+                            <p class="text-3xl font-bold text-gray-800 mt-1" id="stat-avg-salary">0 ر.س</p>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <span class="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-full">متميز</span>
+                            </div>
+                            <h3 class="text-gray-500 text-sm font-medium">نسبة النجاح</h3>
+                            <p class="text-3xl font-bold text-gray-800 mt-1">98%</p>
+                        </div>
+                    </div>
+
+                    <!-- Charts Area -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">توزيع الطلاب حسب المرحلة</h3>
+                            <canvas id="studentsChart"></canvas>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">تخصصات المعلمين</h3>
+                            <canvas id="teachersChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teachers View -->
+                <div id="view-teachers" class="view-section hidden animate-fade-in">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-gray-50 to-white">
+                            <h3 class="text-lg font-bold text-gray-800">قائمة المعلمين والمعلمات</h3>
+                            <button onclick="app.openModal('teacher')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl shadow-lg hover:shadow-indigo-500/30 transition-all duration-300 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                إضافة معلم
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-right">
+                                <thead class="bg-gray-50 text-gray-600 text-sm font-semibold uppercase tracking-wider">
+                                    <tr>
+                                        <th class="p-6">الاسم</th>
+                                        <th class="p-6">التخصص</th>
+                                        <th class="p-6">الدرجة الوظيفية</th>
+                                        <th class="p-6">المؤهل</th>
+                                        <th class="p-6">الراتب</th>
+                                        <th class="p-6">الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="teachers-table-body" class="divide-y divide-gray-100">
+                                    <!-- JS Generated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Students View -->
+                <div id="view-students" class="view-section hidden animate-fade-in">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-gray-50 to-white">
+                            <h3 class="text-lg font-bold text-gray-800">سجلات الطلاب</h3>
+                            <button onclick="app.openModal('student')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl shadow-lg hover:shadow-indigo-500/30 transition-all duration-300 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                تسجيل طالب
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-right">
+                                <thead class="bg-gray-50 text-gray-600 text-sm font-semibold uppercase tracking-wider">
+                                    <tr>
+                                        <th class="p-6">اسم الطالب</th>
+                                        <th class="p-6">المرحلة</th>
+                                        <th class="p-6">الصف</th>
+                                        <th class="p-6">ولي الأمر</th>
+                                        <th class="p-6">الحالة</th>
+                                        <th class="p-6">الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="students-table-body" class="divide-y divide-gray-100">
+                                    <!-- JS Generated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grades/Achievement View -->
+                <div id="view-grades" class="view-section hidden animate-fade-in">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
+                        <div class="max-w-2xl mx-auto">
+                            <div class="w-20 h-20 bg-yellow-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <svg class="w-10 h-10 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                            </div>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-4">سجل التحصيل العلمي</h2>
+                            <p class="text-gray-500 mb-8">هنا يمكنك إدارة درجات الطلاب ورصد النتائج الشهرية والنهائية.</p>
+                            
+                            <!-- Simple Grades Table Simulation -->
+                            <div class="overflow-x-auto border rounded-xl">
+                                <table class="w-full text-right">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="p-4">الطالب</th>
+                                            <th class="p-4">الرياضيات</th>
+                                            <th class="p-4">العلوم</th>
+                                            <th class="p-4">اللغة العربية</th>
+                                            <th class="p-4">المعدل</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100 bg-white">
+                                        <tr>
+                                            <td class="p-4 font-bold">أحمد محمد علي</td>
+                                            <td class="p-4 text-green-600 font-bold">98</td>
+                                            <td class="p-4 text-green-600 font-bold">95</td>
+                                            <td class="p-4 text-green-600 font-bold">92</td>
+                                            <td class="p-4 bg-green-50 text-green-700">95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-4 font-bold">سارة خالد</td>
+                                            <td class="p-4 text-green-600 font-bold">100</td>
+                                            <td class="p-4 text-green-600 font-bold">99</td>
+                                            <td class="p-4 text-green-600 font-bold">98</td>
+                                            <td class="p-4 bg-green-50 text-green-700">99%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-4 font-bold">عمر يوسف</td>
+                                            <td class="p-4 text-yellow-600 font-bold">85</td>
+                                            <td class="p-4 text-green-600 font-bold">90</td>
+                                            <td class="p-4 text-green-600 font-bold">92</td>
+                                            <td class="p-4 bg-yellow-50 text-yellow-700">89%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MODALS -->
+    
+    <!-- Teacher Modal -->
+    <div id="modal-teacher" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="app.closeModal('teacher')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-8 animate-scale-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">بيانات المعلم / المعلمة</h3>
+                <button onclick="app.closeModal('teacher')" class="text-gray-400 hover:text-red-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <form id="form-teacher" onsubmit="app.saveTeacher(event)" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">الاسم الرباعي</label>
+                    <input type="text" name="name" required class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">التخصص</label>
+                    <select name="specialty" required class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50">
+                        <option value="">اختر التخصص...</option>
+                        <option value="رياضيات">رياضيات</option>
+                        <option value="لغة عربية">لغة عربية</option>
+                        <option value="علوم">علوم</option>
+                        <option value="فيزياء">فيزياء</option>
+                        <option value="تربية إسلامية">تربية إسلامية</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">الدرجة الوظيفية</label>
+                    <select name="grade" required class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50">
+                        <option value="المستوى الأول">المستوى الأول</option>
+                        <option value="المستوى الثاني">المستوى الثاني</option>
+                        <option value="المستوى الثالث">المستوى الثالث</option>
+                        <option value="خبير">خبير</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">المؤهل العلمي</label>
+                    <select name="qualification" required class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50">
+                        <option value="بكالوريوس">بكالوريوس</option>
+                        <option value="ماجستير">ماجستير</option>
+                        <option value="دكتوراه">دكتوراه</option>
+                        <option value="دبلوم عالي">دبلوم عالي</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">الراتب الشهري</label>
+                    <input type="number" name="salary" required class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50">
+                </div>
+                <div class="col-span-2 mt-4">
+                    <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3 px-6 rounded-xl hover:shadow-xl hover:scale-[1.01] transition-all">
+                        حفظ البيانات
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Student Modal -->
+    <div id="modal-student" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="app.closeModal('student')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-8 animate-scale-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">تسجيل طالب جديد</h3>
+                <button onclick="app.closeModal('student')" class="text-gray-400 hover:text-red-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <form id="form-student" onsubmit="app.saveStudent(event)" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">اسم الطالب</label>
+                    <input type="text" name="name" required class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">المرحلة الدراسية</label>
+                    <select name="stage" required class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50">
+                        <option value="الابتدائية">الابتدائية</option>
+                        <option value="المتوسطة">المتوسطة</option>
+                        <option value="الثانوية">الثانوية</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">الصف</label>
+                    <input type="text" name="class" placeholder="مثال: الأول أ" required class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50">
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">اسم ولي الأمر</label>
+                    <input type="text" name="guardian" required class="w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 bg-gray-50">
+                </div>
+                <div class="col-span-2 mt-4">
+                    <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3 px-6 rounded-xl hover:shadow-xl hover:scale-[1.01] transition-all">
+                        تسجيل الطالب
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
